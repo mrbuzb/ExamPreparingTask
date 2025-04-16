@@ -29,9 +29,9 @@ public class ToDOListController : ControllerBase
     }
 
     [HttpGet("GetAll")]
-    public Task<List<ToDoListGetDto>> GetAll()
+    public Task<List<ToDoListGetDto>> GetAll(int skip,int take)
     {
-        return _toDoService.GetDoTOListsAsync();
+        return _toDoService.GetDoTOListsAsync(skip,take);
     }
 
     [HttpPut("Update")]

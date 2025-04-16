@@ -6,7 +6,7 @@ public interface IToDoListRepository
 {
     Task<long> AddToDoListAsync(ToDoListEntity toDoList);
     Task<ToDoListEntity> GetToTOListByIDAsync(long id);
-    Task<List<ToDoListEntity>> GetDoTOListsAsync();
+    Task<List<ToDoListEntity>> GetDoTOListsAsync(int skip,int take);
     Task UpdateToDoListAsync(ToDoListEntity toDoList);
     Task DeleteToDOListAsync(long id);
 }
