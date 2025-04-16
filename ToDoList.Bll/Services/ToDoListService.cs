@@ -75,13 +75,11 @@ public class ToDoListService : IToDoListService
         await _toDoListRepository.DeleteToDOListAsync(id);
     }
 
-    public async Task<List<ToDoListGetDto>> GetDoTOListsAsync(int skip, int take)
+    public async Task<List<ToDoListGetDto>> GetDoTOListsAsync(int skip,int take)
     {
-        var res = await _toDoListRepository.GetDoTOListsAsync(skip, take);
-        var mappedResult = res.Select(tdl => _mapper.Map<ToDoListGetDto>(tdl)).ToList();
-        return mappedResult;
+        var res  = await _toDoListRepository.GetDoTOListsAsync(skip,take);
+        return (List<ToDoListGetDto>)res.Select(tdl => _mapper.Map<ToDoListGetDto>(tdl)).ToList();
     }
-
 
     public async Task<ToDoListGetDto> GetToTOListByIDAsync(long id)
     {
