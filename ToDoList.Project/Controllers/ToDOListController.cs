@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Bll.Dtos;
 using ToDoList.Bll.Entities;
 using ToDoList.Bll.Services;
 using ToDoList.Repository.Services;
@@ -29,9 +30,24 @@ public class ToDOListController : ControllerBase
     }
 
     [HttpGet("GetAll")]
-    public Task<List<ToDoListGetDto>> GetAll(int skip,int take)
+    public Task<GetAllResponse> GetAll(int skip,int take)
     {
         return _toDoService.GetDoTOListsAsync(skip,take);
+    }
+    [HttpGet("SelectIncompleteAsync")]
+    public Task<GetAllResponse> SelectIncompleteAsync(int skip,int take)
+    {
+        return _toDoService.SelectIncompleteAsync(skip,take);
+    }
+    [HttpGet("SelectCompletedAsync")]
+    public Task<GetAllResponse> SelectCompletedAsync(int skip,int take)
+    {
+        return _toDoService.SelectCompletedAsync(skip,take);
+    }
+    [HttpGet("SelectByDueDateAsync")]
+    public Task<GetAllResponse> SelectByDueDateAsync(DateTime data)
+    {
+        return _toDoService.SelectByDueDateAsync(data);
     }
 
     [HttpPut("Update")]

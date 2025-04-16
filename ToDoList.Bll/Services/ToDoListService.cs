@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToDoList.Bll.Dtos;
 using ToDoList.Bll.Entities;
 using ToDoList.Dal.Entities;
 using ToDoList.Repository.Services;
@@ -75,10 +76,11 @@ public class ToDoListService : IToDoListService
         await _toDoListRepository.DeleteToDOListAsync(id);
     }
 
-    public async Task<List<ToDoListGetDto>> GetDoTOListsAsync(int skip,int take)
+    public async Task<GetAllResponse> GetDoTOListsAsync(int skip,int take)
     {
+        var count = _toDoListRepository.GetToDoListCount();
         var res  = await _toDoListRepository.GetDoTOListsAsync(skip,take);
-        return (List<ToDoListGetDto>)res.Select(tdl => _mapper.Map<ToDoListGetDto>(tdl)).ToList();
+        return new GetAllResponse() { Count = count, Dtos = res.Select(x => _mapper.Map<ToDoListGetDto>(x)).ToList() };
     }
 
     public async Task<ToDoListGetDto> GetToTOListByIDAsync(long id)
@@ -86,12 +88,30 @@ public class ToDoListService : IToDoListService
         return _mapper.Map<ToDoListGetDto>(await _toDoListRepository.GetToTOListByIDAsync(id));
     }
 
+    public async Task<GetAllResponse> SelectByDueDateAsync(DateTime data)
+    {
+        var count = _toDoListRepository.GetToDoListCount();
+        var toDoItems =  await _toDoListRepository.SelectByDueDateAsync(data);
+        return new GetAllResponse() { Count = count, Dtos = toDoItems.Select(x => _mapper.Map<ToDoListGetDto>(x)).ToList() };
+    }
+
+    public async Task<GetAllResponse> SelectCompletedAsync(int skip, int take)
+    {
+        var count = _toDoListRepository.GetToDoListCount();
+        var toDoItems = await _toDoListRepository.SelectCompletedAsync(skip, take);
+        return new GetAllResponse() { Count = count, Dtos = toDoItems.Select(x => _mapper.Map<ToDoListGetDto>(x)).ToList() };
+    }
+
+    public async Task<GetAllResponse> SelectIncompleteAsync(int skip, int take)
+    {
+         var count = _toDoListRepository.GetToDoListCount();
+        var toDoItems = await _toDoListRepository.SelectIncompleteAsync(skip, take);
+        return  new GetAllResponse() { Count = count,Dtos = toDoItems.Select(x => _mapper.Map<ToDoListGetDto>(x)).ToList()};
+    }
+
     public async Task UpdateToDoListAsync(ToDoListGetDto toDoList)
     {
         await _toDoListRepository.UpdateToDoListAsync(_mapper.Map<ToDoListEntity>(toDoList));
-
-
-        object salom =1;
-        salom = 'a';
     }
+
 }
